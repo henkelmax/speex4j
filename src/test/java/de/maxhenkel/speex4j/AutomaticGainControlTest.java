@@ -1,7 +1,6 @@
-package de.maxhenkel.rnnoise4j;
+package de.maxhenkel.speex4j;
 
-import de.maxhenkel.speex4j.AutomaticGainControl;
-import de.maxhenkel.speex4j.UnknownPlatformException;
+import de.maxhenkel.nativeutils.UnknownPlatformException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

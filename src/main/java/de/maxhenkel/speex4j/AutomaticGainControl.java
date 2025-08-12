@@ -1,5 +1,8 @@
 package de.maxhenkel.speex4j;
 
+import de.maxhenkel.nativeutils.NativeInitializer;
+import de.maxhenkel.nativeutils.UnknownPlatformException;
+
 import java.io.IOException;
 
 public class AutomaticGainControl implements AutoCloseable {
@@ -8,7 +11,7 @@ public class AutomaticGainControl implements AutoCloseable {
 
     public AutomaticGainControl(int frameSize, int sampleRate) throws IOException, UnknownPlatformException {
         synchronized (AutomaticGainControl.class) {
-            Speex.load();
+            NativeInitializer.load("libspeex4j");
         }
         pointer = createAgc0(frameSize, sampleRate);
     }
