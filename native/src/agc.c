@@ -76,6 +76,24 @@ JNIEXPORT void JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_setTarget0
     }
 }
 
+JNIEXPORT jint JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_getTarget0(
+    JNIEnv *env,
+    jclass clazz,
+    const jlong pointer
+) {
+    const AgcState *state = get_state(env, pointer);
+    if (state == NULL) {
+        return 0;
+    }
+    spx_int32_t agc_target = -1;
+    const int result = speex_preprocess_ctl(state->state, SPEEX_PREPROCESS_GET_AGC_TARGET, &agc_target);
+    if (result < 0) {
+        throw_runtime_exception(env, "Failed to get target");
+        return 0;
+    }
+    return agc_target;
+}
+
 JNIEXPORT void JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_setMaxGain0(
     JNIEnv *env,
     jclass clazz,
@@ -96,6 +114,24 @@ JNIEXPORT void JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_setMaxGain
         throw_runtime_exception(env, "Failed to set max gain");
         return;
     }
+}
+
+JNIEXPORT jint JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_getMaxGain0(
+    JNIEnv *env,
+    jclass clazz,
+    const jlong pointer
+) {
+    const AgcState *state = get_state(env, pointer);
+    if (state == NULL) {
+        return 0;
+    }
+    spx_int32_t max_gain = -1;
+    const int result = speex_preprocess_ctl(state->state, SPEEX_PREPROCESS_GET_AGC_MAX_GAIN, &max_gain);
+    if (result < 0) {
+        throw_runtime_exception(env, "Failed to get max gain");
+        return 0;
+    }
+    return max_gain;
 }
 
 JNIEXPORT void JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_setIncrement0(
@@ -120,6 +156,24 @@ JNIEXPORT void JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_setIncreme
     }
 }
 
+JNIEXPORT jint JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_getIncrement0(
+    JNIEnv *env,
+    jclass clazz,
+    const jlong pointer
+) {
+    const AgcState *state = get_state(env, pointer);
+    if (state == NULL) {
+        return 0;
+    }
+    spx_int32_t increment = -1;
+    const int result = speex_preprocess_ctl(state->state, SPEEX_PREPROCESS_GET_AGC_INCREMENT, &increment);
+    if (result < 0) {
+        throw_runtime_exception(env, "Failed to get increment");
+        return 0;
+    }
+    return increment;
+}
+
 JNIEXPORT void JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_setDecrement0(
     JNIEnv *env,
     jclass clazz,
@@ -130,8 +184,8 @@ JNIEXPORT void JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_setDecreme
     if (state == NULL) {
         return;
     }
-    if (decrement < 0) {
-        throw_illegal_argument_exception(env, "Invalid decrement (must be >= 0)");
+    if (decrement > 0) {
+        throw_illegal_argument_exception(env, "Invalid decrement (must be <= 0)");
         return;
     }
     spx_int32_t agc_decrement = decrement;
@@ -140,6 +194,24 @@ JNIEXPORT void JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_setDecreme
         throw_runtime_exception(env, "Failed to set decrement");
         return;
     }
+}
+
+JNIEXPORT jint JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_getDecrement0(
+    JNIEnv *env,
+    jclass clazz,
+    const jlong pointer
+) {
+    const AgcState *state = get_state(env, pointer);
+    if (state == NULL) {
+        return 0;
+    }
+    spx_int32_t decrement = -1;
+    const int result = speex_preprocess_ctl(state->state, SPEEX_PREPROCESS_GET_AGC_DECREMENT, &decrement);
+    if (result < 0) {
+        throw_runtime_exception(env, "Failed to get decrement");
+        return 0;
+    }
+    return decrement;
 }
 
 JNIEXPORT jboolean JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_agc0(

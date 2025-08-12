@@ -28,6 +28,17 @@ public class AutomaticGainControl implements AutoCloseable {
         }
     }
 
+    private native int getTarget0(long agcPointer);
+
+    /**
+     * @return the target linear PCM amplitude (1..32768)
+     */
+    public int getTarget() {
+        synchronized (this) {
+            return getTarget0(pointer);
+        }
+    }
+
     private native void setMaxGain0(long agcPointer, int maxGain);
 
     /**
@@ -38,6 +49,17 @@ public class AutomaticGainControl implements AutoCloseable {
     public void setMaxGain(int maxGain) {
         synchronized (this) {
             setMaxGain0(pointer, maxGain);
+        }
+    }
+
+    private native int getMaxGain0(long agcPointer);
+
+    /**
+     * @return the maximum gain that is allowed to be applied (>=0)
+     */
+    public int getMaxGain() {
+        synchronized (this) {
+            return getMaxGain0(pointer);
         }
     }
 
@@ -54,16 +76,38 @@ public class AutomaticGainControl implements AutoCloseable {
         }
     }
 
+    private native int getIncrement0(long agcPointer);
+
+    /**
+     * @return the maximum allowed increase in gain in dB/second (>=0)
+     */
+    public int getIncrement() {
+        synchronized (this) {
+            return getIncrement0(pointer);
+        }
+    }
+
     private native void setDecrement0(long agcPointer, int decrement);
 
     /**
-     * @param decrement the maximum allowed decrease in gain in dB/second (>=0)
+     * @param decrement the maximum allowed decrease in gain in dB/second (&lt;=0)
      * @throws RuntimeException         if the instance is closed or an error occurred
      * @throws IllegalArgumentException if the target is out of range
      */
     public void setDecrement(int decrement) {
         synchronized (this) {
             setDecrement0(pointer, decrement);
+        }
+    }
+
+    private native int getDecrement0(long agcPointer);
+
+    /**
+     * @return the maximum allowed decrease in gain in dB/second (>=0)
+     */
+    public int getDecrement() {
+        synchronized (this) {
+            return getDecrement0(pointer);
         }
     }
 
