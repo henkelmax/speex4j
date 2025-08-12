@@ -1,6 +1,6 @@
 # Speex4J
 
-A Java wrapper for [Speex](https://github.com/xiph/speexdsp) written in C using JNI.
+A Java wrapper for [Speex](https://www.speex.org/) written in C using JNI.
 
 Java 8+ is required to use this library.
 
