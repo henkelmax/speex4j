@@ -53,7 +53,7 @@ test {
 
 shadowJar {
     archiveClassifier = ''
-    relocate("de.maxhenkel.nativeutils", "de.maxhenkel.lame4j")
+    relocate("de.maxhenkel.nativeutils", "de.maxhenkel.speex4j")
 }
 tasks.assemble.dependsOn tasks.shadowJar
 
