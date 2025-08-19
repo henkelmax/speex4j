@@ -24,3 +24,4 @@ target_compile_definitions(speex-static PRIVATE EXPORT=)
 
 target_compile_definitions(speex-static PRIVATE FLOATING_POINT)
 target_compile_definitions(speex-static PRIVATE USE_SMALLFT)
+target_compile_definitions(speex-static PRIVATE DISABLE_WARNINGS)
