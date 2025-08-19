@@ -138,4 +138,60 @@ public class AutomaticGainControlTest {
         }
     }
 
+    @Test
+    @DisplayName("Set VAD start probability")
+    void setVadProbStart() throws IOException, UnknownPlatformException {
+        try (AutomaticGainControl agc = new AutomaticGainControl(960, 48000)) {
+            IllegalArgumentException e1 = assertThrows(IllegalArgumentException.class, () -> agc.setVadProbStart(-1));
+            assertEquals("Invalid VAD start probability (must be 0..100)", e1.getMessage());
+            IllegalArgumentException e2 = assertThrows(IllegalArgumentException.class, () -> agc.setVadProbStart(101));
+            assertEquals("Invalid VAD start probability (must be 0..100)", e2.getMessage());
+            agc.setVadProbStart(0);
+            agc.setVadProbStart(50);
+            agc.setVadProbStart(100);
+        }
+    }
+
+    @Test
+    @DisplayName("Get VAD start probability")
+    void getVadProbStart() throws IOException, UnknownPlatformException {
+        try (AutomaticGainControl agc = new AutomaticGainControl(960, 48000)) {
+            assertEquals(35, agc.getVadProbStart());
+            agc.setVadProbStart(0);
+            assertEquals(0, agc.getVadProbStart());
+            agc.setVadProbStart(50);
+            assertEquals(50, agc.getVadProbStart());
+            agc.setVadProbStart(100);
+            assertEquals(100, agc.getVadProbStart());
+        }
+    }
+
+    @Test
+    @DisplayName("Set VAD continue probability")
+    void setVadProbContinue() throws IOException, UnknownPlatformException {
+        try (AutomaticGainControl agc = new AutomaticGainControl(960, 48000)) {
+            IllegalArgumentException e1 = assertThrows(IllegalArgumentException.class, () -> agc.setVadProbContinue(-1));
+            assertEquals("Invalid VAD continue probability (must be 0..100)", e1.getMessage());
+            IllegalArgumentException e2 = assertThrows(IllegalArgumentException.class, () -> agc.setVadProbContinue(101));
+            assertEquals("Invalid VAD continue probability (must be 0..100)", e2.getMessage());
+            agc.setVadProbContinue(0);
+            agc.setVadProbContinue(50);
+            agc.setVadProbContinue(100);
+        }
+    }
+
+    @Test
+    @DisplayName("Get VAD continue probability")
+    void getVadProbContinue() throws IOException, UnknownPlatformException {
+        try (AutomaticGainControl agc = new AutomaticGainControl(960, 48000)) {
+            assertEquals(20, agc.getVadProbContinue());
+            agc.setVadProbContinue(0);
+            assertEquals(0, agc.getVadProbContinue());
+            agc.setVadProbContinue(50);
+            assertEquals(50, agc.getVadProbContinue());
+            agc.setVadProbContinue(100);
+            assertEquals(100, agc.getVadProbContinue());
+        }
+    }
+
 }

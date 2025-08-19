@@ -114,6 +114,54 @@ public class AutomaticGainControl implements AutoCloseable {
         }
     }
 
+    private native void setVadProbStart0(long agcPointer, int probStart);
+
+    /**
+     * @param probStart the probability required to switch to speech in percent (0..100)
+     * @throws RuntimeException         if the instance is closed or an error occurred
+     * @throws IllegalArgumentException if the target is out of range
+     */
+    public void setVadProbStart(int probStart) {
+        synchronized (this) {
+            setVadProbStart0(pointer, probStart);
+        }
+    }
+
+    private native int getVadProbStart0(long agcPointer);
+
+    /**
+     * @return the probability required to switch to speech in percent (0..100)
+     */
+    public int getVadProbStart() {
+        synchronized (this) {
+            return getVadProbStart0(pointer);
+        }
+    }
+
+    private native void setVadProbContinue0(long agcPointer, int probContinue);
+
+    /**
+     * @param probContinue the probability required to stay in speech in percent (0..100)
+     * @throws RuntimeException         if the instance is closed or an error occurred
+     * @throws IllegalArgumentException if the target is out of range
+     */
+    public void setVadProbContinue(int probContinue) {
+        synchronized (this) {
+            setVadProbContinue0(pointer, probContinue);
+        }
+    }
+
+    private native int getVadProbContinue0(long agcPointer);
+
+    /**
+     * @return the probability required to stay in speech in percent (0..100)
+     */
+    public int getVadProbContinue() {
+        synchronized (this) {
+            return getVadProbContinue0(pointer);
+        }
+    }
+
     private native boolean agc0(long agcPointer, short[] input);
 
     /**

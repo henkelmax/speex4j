@@ -39,9 +39,14 @@ JNIEXPORT jlong JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_createAgc
     int agc = 1;
     int result = 0;
     result = speex_preprocess_ctl(speex_preprocess_state, SPEEX_PREPROCESS_SET_AGC, &agc);
-
     if (result < 0) {
         throw_io_exception(env, "Failed to enable AGC");
+        return 0;
+    }
+    int vad = 1;
+    result = speex_preprocess_ctl(speex_preprocess_state, SPEEX_PREPROCESS_SET_VAD, &vad);
+    if (result < 0) {
+        throw_io_exception(env, "Failed to enable VAD");
         return 0;
     }
 
@@ -212,6 +217,86 @@ JNIEXPORT jint JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_getDecreme
         return 0;
     }
     return decrement;
+}
+
+JNIEXPORT void JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_setVadProbStart0(
+    JNIEnv *env,
+    jclass clazz,
+    const jlong pointer,
+    const jint prob_start
+) {
+    const AgcState *state = get_state(env, pointer);
+    if (state == NULL) {
+        return;
+    }
+    if (prob_start < 0 || prob_start > 100) {
+        throw_illegal_argument_exception(env, "Invalid VAD start probability (must be 0..100)");
+        return;
+    }
+    spx_int32_t vad_prob_start = prob_start;
+    const int result = speex_preprocess_ctl(state->state, SPEEX_PREPROCESS_SET_PROB_START, &vad_prob_start);
+    if (result < 0) {
+        throw_runtime_exception(env, "Failed to set VAD start probability");
+        return;
+    }
+}
+
+JNIEXPORT jint JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_getVadProbStart0(
+    JNIEnv *env,
+    jclass clazz,
+    const jlong pointer
+) {
+    const AgcState *state = get_state(env, pointer);
+    if (state == NULL) {
+        return 0;
+    }
+    spx_int32_t prob_start = -1;
+    const int result = speex_preprocess_ctl(state->state, SPEEX_PREPROCESS_GET_PROB_START, &prob_start);
+    if (result < 0) {
+        throw_runtime_exception(env, "Failed to get VAD start probability");
+        return 0;
+    }
+    return prob_start;
+}
+
+JNIEXPORT void JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_setVadProbContinue0(
+    JNIEnv *env,
+    jclass clazz,
+    const jlong pointer,
+    const jint prob_continue
+) {
+    const AgcState *state = get_state(env, pointer);
+    if (state == NULL) {
+        return;
+    }
+    if (prob_continue < 0 || prob_continue > 100) {
+        throw_illegal_argument_exception(env, "Invalid VAD continue probability (must be 0..100)");
+        return;
+    }
+    spx_int32_t vad_prob_continue = prob_continue;
+    const int result = speex_preprocess_ctl(state->state, SPEEX_PREPROCESS_SET_PROB_CONTINUE, &vad_prob_continue);
+    if (result < 0) {
+        throw_runtime_exception(env, "Failed to set VAD continue probability");
+        return;
+    }
+}
+
+JNIEXPORT jint JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_getVadProbContinue0(
+    JNIEnv *env,
+    jclass clazz,
+    const jlong pointer
+) {
+    const AgcState *state = get_state(env, pointer);
+    if (state == NULL) {
+        return 0;
+    }
+    spx_int32_t prob_continue = -1;
+    const int result = speex_preprocess_ctl(state->state, SPEEX_PREPROCESS_GET_PROB_CONTINUE, &prob_continue);
+    if (result < 0) {
+        throw_runtime_exception(env, "Failed to get VAD continue probability");
+        return 0;
+    }
+    return prob_continue;
 }
 
 JNIEXPORT jboolean JNICALL Java_de_maxhenkel_speex4j_AutomaticGainControl_agc0(
